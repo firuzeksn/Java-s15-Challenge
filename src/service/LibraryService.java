@@ -8,4 +8,8 @@ public interface LibraryService {
     void listAllBooks();
     void borrowBook(long bookId, MemberRecord member);
     void returnBook(long bookId, MemberRecord member);
+    void deleteBook(long bookId);
+    void listBooksByAuthor(String authorName);
+    void updateBookName(long id, String newName);
+    Book findBookById(long id);
 }

@@ -57,4 +57,44 @@ public class LibraryManager implements LibraryService {
             System.out.println("Kitap iade edildi. Ücret iadesi yapıldı: " + book.getPrice() + " TL");
         }
     }
+    @Override
+    public void deleteBook(long bookId) {
+        if (bookMap.containsKey(bookId)) {
+            bookMap.remove(bookId);
+            System.out.println("Kitap sistemden başarıyla silindi.");
+        } else {
+            System.out.println("Hata: Silinecek kitap (ID: " + bookId + ") bulunamadı.");
+        }
+    }
+
+    @Override
+    public void listBooksByAuthor(String authorName) {
+        System.out.println("--- " + authorName + " Kitapları ---");
+        boolean found = false;
+        for (Book b : bookMap.values()) {
+            if (b.getAuthor().equalsIgnoreCase(authorName)) {
+                System.out.println("ID: " + b.getBookID() + " | Kitap: " + b.getName());
+                found = true;
+            }
+        }
+        if (!found) {
+            System.out.println(authorName + " adına kayıtlı bir kitap bulunamadı.");
+        }
+    }
+
+    @Override
+    public void updateBookName(long id, String newName) {
+        if (bookMap.containsKey(id)) {
+            bookMap.get(id).setName(newName);
+            System.out.println("Kitap adı başarıyla güncellendi.");
+        } else {
+            System.out.println("Hata: Güncellenecek kitap bulunamadı!");
+        }
+    }
+
+    @Override
+    public Book findBookById(long id) {
+        return bookMap.get(id); // Map üzerinden ID ile kitabı bulur
+    }
+
 }

@@ -5,7 +5,7 @@ public abstract class Book {
     private String author;
     private String name;
     private double price;
-    private boolean status; // true: Mevcut, false: Ödünçte
+    private boolean status;
     private String edition;
 
     public Book(long bookID, String author, String name, double price, String edition) {
@@ -14,15 +14,13 @@ public abstract class Book {
         this.name = name;
         this.price = price;
         this.edition = edition;
-        this.status = true; // Başlangıçta kütüphanede
+        this.status = true;
     }
 
-    // Hatanın çözümü olan metod:
     public double getPrice() {
         return price;
     }
 
-    // Diğer gerekli Getter'lar:
     public long getBookID() {
         return bookID;
     }

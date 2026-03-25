@@ -5,9 +5,9 @@ import model.MemberRecord;
 import java.util.*;
 
 public class LibraryManager implements LibraryService {
-    // Veri saklamak için MAP kullanımı (İsterleri karşılıyor)
+    // Veri saklamak için MAP kullanımı
     private Map<Long, Book> bookMap = new HashMap<>();
-    // Yazarları benzersiz tutmak için SET kullanımı (İsterleri karşılıyor)
+    // Yazarları benzersiz tutmak için SET kullanımı
     private Set<String> authors = new HashSet<>();
 
     @Override
@@ -39,7 +39,7 @@ public class LibraryManager implements LibraryService {
         } else if (member.getNoBooksIssued() >= member.getMaxBookLimit()) {
             System.out.println("Kitap limitiniz (5) dolmuştur!");
         } else {
-            // Kitabı ödünç ver
+            // Kitabı ödünç verme ve fatura işlemi
             book.setStatus(false);
             member.setNoBooksIssued(member.getNoBooksIssued() + 1);
             System.out.println("--- FATURA ---");
@@ -94,7 +94,7 @@ public class LibraryManager implements LibraryService {
 
     @Override
     public Book findBookById(long id) {
-        return bookMap.get(id); // Map üzerinden ID ile kitabı bulur
+        return bookMap.get(id);
     }
 
 }

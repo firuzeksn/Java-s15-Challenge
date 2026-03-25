@@ -10,9 +10,11 @@ public class Main {
         LibraryManager manager = new LibraryManager();
         Scanner scanner = new Scanner(System.in);
 
-        // Test için bir Librarian (Kütüphaneci) ve bir Student (Üye) oluşturalım
+
         Librarian admin = new Librarian("Firuze", "1234");
         Student member = new Student(101);
+        Faculty teacher = new Faculty(201);
+
 
         LibraryData.loadInitialData(manager);
 
@@ -27,11 +29,13 @@ public class Main {
             System.out.println("4. Tüm Kitapları Listele");
             System.out.println("5. Kitap Ödünç Al");
             System.out.println("6. Kitap İade Et");
+            System.out.println("7. Yazara Göre Kitap Listele");
+            System.out.println("8. Kitap Adı Güncelle");
             System.out.println("0. Çıkış");
             System.out.print("Seçiminiz: ");
 
             int choice = scanner.nextInt();
-            scanner.nextLine(); // Buffer temizleme
+            scanner.nextLine();
 
             switch (choice) {
                 case 1:
@@ -45,19 +49,18 @@ public class Main {
                     System.out.print("Fiyat: ");
                     double price = scanner.nextDouble();
 
-                    // Polymorphism örneği: StudyBook ekliyoruz
                     manager.addBook(new StudyBook(id, author, name, price, "1. Edition"));
                     System.out.println("Kitap başarıyla eklendi.");
                     break;
                 case 2:
                     System.out.print("Silmek istediğiniz Kitap ID: ");
                     long deleteId = scanner.nextLong();
-                    manager.deleteBook(deleteId); // Manager'daki metodu çağırıyoruz
+                    manager.deleteBook(deleteId);
                     break;
                 case 3:
                     System.out.print("Aramak istediğiniz Kitap ID'si: ");
                     long searchId = scanner.nextLong();
-                    Book foundBook = manager.findBookById(searchId); // Manager'dan kitabı bulmasını istiyoruz
+                    Book foundBook = manager.findBookById(searchId);
 
                     if (foundBook != null) {
                         System.out.println("Kitap Bulundu: " + foundBook.getName() + " - Yazar: " + foundBook.getAuthor());
@@ -71,7 +74,7 @@ public class Main {
                     break;
 
                 case 5:
-                    // 1. ÜYE BELİRLEME
+
                     MemberRecord activeMember = null;
                     int memberType = 0;
                     long mId = 0;
@@ -80,7 +83,7 @@ public class Main {
                         System.out.println("\n>>> Üye Tipini Seçiniz: 1-Öğrenci, 2-Akademisyen");
                         if (scanner.hasNextInt()) {
                             memberType = scanner.nextInt();
-                            scanner.nextLine(); // Buffer temizliği
+                            scanner.nextLine();
 
                             if (memberType == 1) {
                                 System.out.print("Öğrenci Numaranızı Giriniz: ");
@@ -101,7 +104,7 @@ public class Main {
                         }
                     }
 
-                    // 2. KİTAPLARI SEÇELİM (1-Evet / 2-Hayır Mantığı)
+
                     List<Long> selectedBookIds = new ArrayList<>();
                     boolean isDone = false;
 
@@ -112,13 +115,13 @@ public class Main {
                             scanner.nextLine();
                             selectedBookIds.add(borrowId);
 
-                            // Devam etmek istiyor mu kontrolü
+
                             System.out.print("Başka bir kitap eklemek ister misiniz? (1-Evet / 2-Hayır): ");
                             int continueChoice = scanner.nextInt();
-                            scanner.nextLine(); // Buffer temizliği
+                            scanner.nextLine();
 
                             if (continueChoice != 1) {
-                                isDone = true; // 1 dışında ne girerse (veya 2 girerse) döngü biter
+                                isDone = true;
                             }
                         } else {
                             System.out.println(">>> HATA: Geçersiz ID!");
@@ -126,7 +129,7 @@ public class Main {
                         }
                     }
 
-                    // 3. İŞLEM VE FATURA
+
                     System.out.println("\n--- İŞLEM ÖZETİ ---");
                     System.out.println("İşlem Yapan Üye ID: " + mId + " (" + (memberType == 1 ? "Öğrenci" : "Akademisyen") + ")");
 
@@ -149,35 +152,32 @@ public class Main {
 
                     if (scanner.hasNextLong()) {
                         long returnId = scanner.nextLong();
-                        scanner.nextLine(); // Tampon temizliği (O atlama sorunu olmasın diye)
+                        scanner.nextLine();
 
-                        // Önce kitabın sistemde olup olmadığını kontrol edelim
+
                         Book bookToReturn = manager.findBookById(returnId);
 
                         if (bookToReturn != null) {
-                            // Kitap bulunduysa iade işlemini başlat
-                            // Not: İade ederken de hangi üyenin iade ettiğini (member) belirtmemiz gerekir
-                            // Burada test için başta oluşturduğumuz 'member' nesnesini kullanıyoruz
                             manager.returnBook(returnId, member);
                         } else {
                             System.out.println(">>> HATA: Bu ID ile kayıtlı bir kitap bulunamadı.");
                         }
                     } else {
                         System.out.println(">>> HATA: Lütfen geçerli bir sayısal ID giriniz!");
-                        scanner.nextLine(); // Hatalı girişi temizle
+                        scanner.nextLine();
                     }
                     break;
 
-                case 7: // Menüye 7. seçenek olarak ekleyebilirsin
+                case 7:
                     System.out.print("Aramak istediğiniz yazarın adı: ");
                     String searchAuthor = scanner.nextLine();
                     manager.listBooksByAuthor(searchAuthor);
                     break;
 
-                case 8: // Menüye yeni bir numara olarak ekle
+                case 8:
                     System.out.print("Güncellenecek Kitap ID: ");
                     long updateId = scanner.nextLong();
-                    scanner.nextLine(); // Boşluk temizleme
+                    scanner.nextLine();
                     System.out.print("Yeni Kitap Adı: ");
                     String newName = scanner.nextLine();
                     manager.updateBookName(updateId, newName);
